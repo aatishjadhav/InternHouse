@@ -4,7 +4,9 @@ Intern House is a modern job board application where employers can post job oppo
 
 ---
 
-## 🚀 Live Link()
+## 🚀 Live Link
+
+[Live Demo](https://frontend-internhouse.vercel.app/) 
 
 ---
 
