@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { addNewJob } from "../slices/jobSlice";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ const AddJob = () => {
   const [jobType, setJobType] = useState("");
   const [description, setDescription] = useState("");
   const [qualifications, setQualifications] = useState("");
+  const toastRef = useRef(null);
 
   const handleSubmitJob = (e) => {
     e.preventDefault();
@@ -26,10 +27,12 @@ const AddJob = () => {
       description,
       qualifications: qualifications.split(",").map((q) => q.trim()),
     };
-    dispatch(addNewJob( jobsData ));
-    console.log(jobsData);
-    
-    navigate("/");
+    dispatch(addNewJob(jobsData));
+
+    // Trigger toast
+    const toast = new window.bootstrap.Toast(toastRef.current);
+    toast.show();
+    setTimeout(() => navigate("/"), 3000);
   };
   return (
     <div className="container py-3">
@@ -89,6 +92,34 @@ const AddJob = () => {
           Post Job
         </button>
       </form>
+      {/* Bootstrap Toast */}
+      <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 9999 }}>
+        <div
+          className="toast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+          ref={toastRef}
+        >
+          <div className="toast-header">
+            <img
+              src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg"
+              className="rounded me-2"
+              alt="Bootstrap"
+              width="20"
+            />
+            <strong className="me-auto">Success</strong>
+            <small>Just now</small>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div className="toast-body">Job added successfully!</div>
+        </div>
+      </div>
     </div>
   );
 };
